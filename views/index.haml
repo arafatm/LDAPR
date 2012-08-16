@@ -1,0 +1,61 @@
+!!!  
+%html  
+  %head  
+    %title 
+      LDAP
+  %body  
+    %div
+      To make this work, create a config.yml with the following:
+    %div
+      host: 
+      %br
+      port: 
+      %br
+      basedn: 
+      %br
+      user: 
+    %div
+      Also create an environment variable 'wspasswd' with your ldap password
+    %p 
+      %div 
+        Example:
+        %ul
+          %li 
+            %a(href="/v/#{settings.basedn}") "HTML(Base + Children) = /v/#{settings.basedn}"
+          %li 
+            %a(href="/b/#{settings.basedn}") "(Base) /b/#{settings.basedn}"
+          %li 
+            %a(href="/o/#{settings.basedn}") "(OneLevel) /o/#{settings.basedn}"
+          %li
+            %a(href="/a/ou=People,#{settings.basedn}") "(Advanced Search Subtree) /a/ou=People,#{settings.basedn}"
+          %li
+            Routing mirrors fdn
+      %div 
+        TODO (JSON):
+        %ul
+          %li 
+            %a(href="/s/#{settings.basedn}?uid=paul&uid=john&ou=disciples") (Simple Search Subtree) /s/#{settings.basedn}?uid=paul&uid=john&ou=disciples maps to (&(ou=disciples)(|(uid=paul)(uid=john))
+          %li
+            Edit
+          %li
+            Add
+          %li
+            Delete
+    %p
+      = "Entry"
+      %ul
+        %li= "Attribute 1"
+        %ul
+          %li= "value 1"
+        %li= "Attribute 2"
+        %ul
+          %li= "value 1"
+          %li= "value 2"
+          %li= "value 3"
+        %li= "Child 1"
+        %ul
+          %li= "Attribute 1"
+          %ul
+            %li= "Value 1"
+            %li= "Value 2"
+            %li= "Value 3"

@@ -1,0 +1,23 @@
+* {
+  margin:   0;
+  padding:  0;
+}
+
+ul {
+  padding-left: 1em;
+}
+label {
+  float: left;
+  width: 10em;
+  text-align: right;
+  padding-right: 1em;
+}
+input {
+  width: 30em;
+}
+#submit {
+  margin-left: 10em;
+  margin-top: 1ex;
+  width: 5em;
+}
+

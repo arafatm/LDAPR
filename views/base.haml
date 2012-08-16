@@ -1,0 +1,23 @@
+!!!  
+%html  
+  %head  
+    %link(rel="stylesheet" type="text/css" href="/css/main.css")
+    %title 
+      LDA.pr
+  %body  
+    %p#attributes 
+      %h2 Attributes
+      %ul#attributes
+      - attributes.each do |k,v|
+        %li= k
+        %ul
+          - v.each do |value|
+            %li=value
+    %p#children 
+      %h2 Children
+      %ul#children
+      - children.each do |entry, route|
+        %li
+          - route = "/b/" + route
+          %a(href= route )= entry
+

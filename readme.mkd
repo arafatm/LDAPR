@@ -1,0 +1,12 @@
+# To Run
+
+Clone and rackup/shotgun/wtf
+
+Read '/'
+
+# Steps to make ldapsearch work
+
+- Section under https://help.ubuntu.com/community/OpenSSL#Using_PKCS.2312_Certificates_in_Client_Applications  to add the cert to the store
+- Edit /etc/ldap/ldap.conf to add
+  - TLS_CACERT /etc/ssl/certs/ca-certificates.crt
+  - TLS_REQCERT demand

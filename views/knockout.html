@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <script type='text/javascript' src='../public/js/jquery.js'></script>
+    <script type='text/javascript' src='../public/js/underscore.js'></script>
+    <script type='text/javascript' src='../public/js/knockout.js'></script>
+  </head>
+  <body>
+    <div id='actions'>
+    </div>
+    <div id='ldap'>
+    </div>
+  </body>
+  <script type='text/javascript'>
+    var items = [];
+    var ldapdata;
+    $(document).ready(function() {
+      console.log('ready');
+      $.ajax({
+        url: "../data/data.json",
+        dataType: 'json',
+        success: function(data) {
+          console.log('success');
+          ldapdata = data;
+          $.each(data, function(k,dn) {
+            $.each(dn, function(k, v) {
+              items.push('<li id="'+k+'">'+k+': '+v+'</li>');
+            });
+            items.push('<hr />');
+          });
+        },
+        error: function(data) {
+          console.log('error');
+          console.log(data);
+        },
+        complete: function(data) {
+          console.log('complete');
+          $('<ul/>', {
+            'class': 'my-new-list',
+            html: items.join('')
+          }).appendTo('body');
+        }
+      });
+    });
+  </script>
+</html>

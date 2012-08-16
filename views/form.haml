@@ -1,0 +1,16 @@
+!!!  
+%html  
+  %head  
+    %link(rel="stylesheet" type="text/css" href="/css/main.css")
+    %title 
+      LDA.pr
+  %body  
+    - form_path = '/a/'+path
+    %form{:method=>'post',:action=>form_path}
+      %label Bind DN
+      %input#binddn{:type=>'text',:name=>'binddn',:value=>route_to_ldap(path)} 
+      %br
+      %label filter
+      %input#filter{:type=>'text',:name=>'filter'} 
+      %br
+      %button#submit{:value=>"Submit"} Submit
