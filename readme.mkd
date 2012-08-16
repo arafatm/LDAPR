@@ -1,5 +1,15 @@
 # To Run
 
+Clone
+
+Create a config.yml with the following:
+    basedn:
+    host:
+    port:
+    user:
+
+Also, create an environment variable 'wspasswd' with your ldap password
+
 Clone and rackup/shotgun/wtf
 
 Read '/'
