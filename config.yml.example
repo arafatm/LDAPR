@@ -1,0 +1,5 @@
+basedn: dc=myserver,dc=com
+host: 127.0.0.1
+port: 389
+ssl:  false
+user: cn=admin,dc=myserver,dc=com
