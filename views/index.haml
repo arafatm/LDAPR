@@ -17,7 +17,7 @@
           %li
             %a(href="/a/ou=People,#{settings.basedn}") "(Advanced Search Subtree) /a/ou=People,#{settings.basedn}"
           %li 
-            %a(href="/s/#{settings.basedn}?uid=paul&uid=john&ou=People") (Simple Search Subtree) /s/#{settings.basedn}?uid=paul&uid=john&ou=People maps to (&(ou=People)(|(uid=paul)(uid=john))
+            %a(href="/s/#{settings.basedn}?uid=paul&uid=john&sn=Doe") (Simple Search Subtree) /s/#{settings.basedn}?uid=paul&uid=john&sn=Doe maps to (&(sn=Doe)(|(uid=paul)(uid=john))
           %li
             Routing mirrors fdn
       %div 

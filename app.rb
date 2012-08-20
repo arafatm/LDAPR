@@ -23,7 +23,7 @@ class LDApr < Sinatra::Base
   get '/b/*' do
     content_type :json
     path = request.path_info[3..-1]
-    locals = ldap_dn(path)
+    locals = ldap_basedn(path)
     locals.merge! ldap_entry(path)
     return JSON.pretty_generate(locals)
     
@@ -31,13 +31,13 @@ class LDApr < Sinatra::Base
   get '/o/*' do
     content_type :json
     path = request.path_info[3..-1]
-    locals = ldap_dn(path)
+    locals = ldap_basedn(path)
     locals.merge! ldap_children(path)
     return JSON.pretty_generate(locals)
   end
   get '/v/*' do
     path = request.path_info[3..-1]
-    locals = ldap_dn(path)
+    locals = ldap_basedn(path)
     locals[:attributes] = {}
     locals[:children] = {}
     locals.merge!(ldap_entry(path))
@@ -47,9 +47,9 @@ class LDApr < Sinatra::Base
   get '/s/*' do
     path = request.path_info[3..-1]
     filter = construct_filter CGI::parse(request.query_string)
-    locals = ldap_dn(path)
-    children = ldap_children(path, LDAP::LDAP_SCOPE_SUBTREE, filter)
-    return children.to_json
+    locals = ldap_basedn(path)
+    locals.merge! ldap_children(path, LDAP::LDAP_SCOPE_SUBTREE, filter)
+    return JSON.pretty_generate(locals)
   end
   get '/a/*' do
     haml :form, :locals => {:path => request.path_info[3..-1]}
@@ -80,10 +80,9 @@ class LDApr < Sinatra::Base
     locals = ldap_base(path, scope, filter)
     return locals
   end
-  def ldap_dn(path)
+  def ldap_basedn(path)
     locals = {}
-    locals[:dn_path] = path
-    locals[:dn_base] = path
+    locals[:base_dn] = path
 
     return locals
   end
