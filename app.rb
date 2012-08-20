@@ -1,17 +1,18 @@
 require 'ldap'
 require 'json'
 require 'cgi'
+require 'yaml'
 
 class LDApr < Sinatra::Base
   configure do
     file =  "./config.yml"
     if File.exist?(file)
       yaml = YAML.load_file(file)
+      set :ssl,     yaml['ssl'] || false
       set :host,    yaml['host']
       set :port,    yaml['port']
       set :basedn,  yaml['basedn']
       set :user,    yaml['user']
-      set :passwd,  ENV['wspasswd']
     end
   end
 
@@ -73,6 +74,7 @@ class LDApr < Sinatra::Base
     locals = ldap_base(path, scope, filter)
     return locals
   end
+
   def ldap_children(path, scope = LDAP::LDAP_SCOPE_ONELEVEL, filter = default_filter)
     locals = ldap_base(path, scope, filter)
     return locals
@@ -81,20 +83,18 @@ class LDApr < Sinatra::Base
     locals = {}
     locals[:dn_path] = path
     locals[:dn_base] = path
+
     return locals
   end
   def ldap_base(base, scope = default_scope, filter = default_filter)
-    puts "#{base}, #{scope}, #{filter}"
     locals = {}
 
     conn = ldap_conn
     conn.bind(user,passwd) {
-      conn.perror("bind")
 
       begin
 
         conn.search(base, scope, filter) do |attributes|
-          puts "found attributes"
           if(scope == LDAP::LDAP_SCOPE_BASE)
             locals[:attributes] ||= {}
             attributes.to_hash.each do |k,v|
@@ -124,10 +124,16 @@ class LDApr < Sinatra::Base
 
   def ldap_conn
 
-    conn = LDAP::SSLConn.new(settings.host, settings.port)
-    conn.set_option(LDAP::LDAP_OPT_PROTOCOL_VERSION, 3)
+    if settings.ssl
+      conn = LDAP::SSLConn.new(settings.host, settings.port)
+      conn.set_option(LDAP::LDAP_OPT_PROTOCOL_VERSION, 3)
+      return conn
+    else
+      conn = LDAP::Conn.new(settings.host, settings.port)
+      conn.set_option(LDAP::LDAP_OPT_PROTOCOL_VERSION, 3)
+      return conn
+    end
 
-    return conn
   end
 
   def user
@@ -135,7 +141,7 @@ class LDApr < Sinatra::Base
   end
 
   def passwd
-    return settings.passwd
+    return ENV['wspasswd']
   end
   def default_filter
     return '(objectclass=*)'
