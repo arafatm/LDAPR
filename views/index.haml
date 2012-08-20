@@ -16,13 +16,13 @@
             %a(href="/o/#{settings.basedn}") "(OneLevel) /o/#{settings.basedn}"
           %li
             %a(href="/a/ou=People,#{settings.basedn}") "(Advanced Search Subtree) /a/ou=People,#{settings.basedn}"
+          %li 
+            %a(href="/s/#{settings.basedn}?uid=paul&uid=john&ou=People") (Simple Search Subtree) /s/#{settings.basedn}?uid=paul&uid=john&ou=People maps to (&(ou=People)(|(uid=paul)(uid=john))
           %li
             Routing mirrors fdn
       %div 
         TODO (JSON):
         %ul
-          %li 
-            %a(href="/s/#{settings.basedn}?uid=paul&uid=john&ou=disciples") (Simple Search Subtree) /s/#{settings.basedn}?uid=paul&uid=john&ou=disciples maps to (&(ou=disciples)(|(uid=paul)(uid=john))
           %li
             Edit
           %li

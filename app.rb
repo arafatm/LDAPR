@@ -26,6 +26,7 @@ class LDApr < Sinatra::Base
     locals = ldap_dn(path)
     locals.merge! ldap_entry(path)
     return JSON.pretty_generate(locals)
+    
   end
   get '/o/*' do
     content_type :json
@@ -47,8 +48,8 @@ class LDApr < Sinatra::Base
     path = request.path_info[3..-1]
     filter = construct_filter CGI::parse(request.query_string)
     locals = ldap_dn(path)
-    locals.merge! ldap_children(path, default_scope, filter)
-    return JSON.pretty_generate(locals)
+    children = ldap_children(path, LDAP::LDAP_SCOPE_SUBTREE, filter)
+    return children.to_json
   end
   get '/a/*' do
     haml :form, :locals => {:path => request.path_info[3..-1]}
@@ -101,9 +102,11 @@ class LDApr < Sinatra::Base
               locals[:attributes][k] = v
             end
           elsif(scope == LDAP::LDAP_SCOPE_ONELEVEL)
-            locals[:children] ||= {} 
-            dn = attributes.to_hash['dn'][0]
-            locals[:children][dn] = dn
+            locals[:children] ||= []
+            locals[:children] << attributes.get_dn
+          elsif(scope == LDAP::LDAP_SCOPE_SUBTREE)
+            locals[:children] ||= []
+            locals[:children] << attributes.get_dn
           end
         end
       rescue LDAP::ResultError

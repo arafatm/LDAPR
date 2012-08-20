@@ -16,8 +16,8 @@
     %p#children 
       %h2 Children
       %ul#children
-        - children.each do |entry, route|
+        - children.each do |entry|
           %li
-            - route = "/v/" + route
+            - route = "/v/" + entry
             %a(href= route )= entry
 
