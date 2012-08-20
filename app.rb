@@ -48,7 +48,7 @@ class LDApr < Sinatra::Base
     path = request.path_info[3..-1]
     filter = construct_filter CGI::parse(request.query_string)
     locals = ldap_basedn(path)
-    locals.merge! ldap_children(path, LDAP::LDAP_SCOPE_SUBTREE, filter)
+    locals = ldap_children(path, LDAP::LDAP_SCOPE_SUBTREE, filter)
     return JSON.pretty_generate(locals)
   end
   get '/a/*' do
